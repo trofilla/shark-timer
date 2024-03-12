@@ -25,7 +25,7 @@ export class TimerControlsComponent implements OnInit {
 
   fullScreen$ = new BehaviorSubject<boolean>(false);
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.alarm = this.alarmElementRef.nativeElement;

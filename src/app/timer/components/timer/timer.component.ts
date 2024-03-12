@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, Subject, timer } from 'rxjs';
 import { filter, map, mapTo, scan, startWith, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
@@ -25,7 +33,7 @@ export class TimerComponent implements OnInit, OnDestroy {
 
   startTime: number = 5 + 1000 * 60 * 5;
 
-  constructor(private cd: ChangeDetectorRef) { }
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.interval$ = timer(0, 10);
@@ -36,14 +44,9 @@ export class TimerComponent implements OnInit, OnDestroy {
       this.cd.markForCheck();
     });
 
-    this.timeDisplay.settingTime$.pipe(
-      filter(settingTime => settingTime),
-    ).subscribe(() => this.controls.stop());
+    this.timeDisplay.settingTime$.pipe(filter(settingTime => settingTime)).subscribe(() => this.controls.stop());
 
-    this.controls.timerStart$.pipe(
-      filter(start => start),
-    ).subscribe(() => this.timeDisplay.endSetTime());
-
+    this.controls.timerStart$.pipe(filter(start => start)).subscribe(() => this.timeDisplay.endSetTime());
   }
 
   ngOnDestroy() {
@@ -69,14 +72,11 @@ export class TimerComponent implements OnInit, OnDestroy {
       takeWhile(val => val >= 0),
     );
 
-    this.percent$ = this.time$.pipe(
-      map(time => (1 - time / startTime) * 100),
-    );
+    this.percent$ = this.time$.pipe(map(time => (1 - time / startTime) * 100));
   }
 
   setTime(startTime: number) {
     this.startTime = startTime;
     this.resetTimer(this.startTime);
   }
-
 }

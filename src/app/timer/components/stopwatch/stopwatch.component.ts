@@ -20,7 +20,7 @@ export class StopwatchComponent implements OnInit, OnDestroy {
   reset$: Subject<void> = new Subject<void>();
   destroyed$: Subject<void> = new Subject<void>();
 
-  constructor(private cd: ChangeDetectorRef) { }
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.interval$ = timer(0, 10);
@@ -45,8 +45,7 @@ export class StopwatchComponent implements OnInit, OnDestroy {
       filter(() => this.active),
       switchMap(start => (start ? this.interval$.pipe(mapTo(10)) : EMPTY)),
       scan((acc, val) => acc + val, 0),
-      takeUntil(this.reset$)
+      takeUntil(this.reset$),
     );
   }
-
 }

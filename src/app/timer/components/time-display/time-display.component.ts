@@ -12,7 +12,7 @@ export class TimeDisplayComponent implements OnInit {
   private minuteInMs = 60000;
   private secondInMs = 1000;
 
-  @Input() time: number = (12 * this.hourInMs) + (34 * this.minuteInMs) + (56 * 1000) + 780;
+  @Input() time: number = 12 * this.hourInMs + 34 * this.minuteInMs + 56 * 1000 + 780;
   @Input() showHundriths: boolean = true;
   @Input() canSetTime: boolean = false;
 
@@ -23,10 +23,9 @@ export class TimeDisplayComponent implements OnInit {
   inputMinutes: number;
   inputSeconds: number;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   inputChange(hours: number, minutes: number, seconds: number) {
     const timeVal = hours * this.hourInMs + minutes * this.minuteInMs + seconds * this.secondInMs;
@@ -89,12 +88,10 @@ export class TimeDisplayComponent implements OnInit {
     return this.digitOne(this.cSeconds);
   }
 
-
   private digitTwo(val: number) {
     return Math.floor((val / 10) % 10);
   }
   private digitOne(val: number) {
     return val % 10;
   }
-
 }

@@ -13,19 +13,21 @@ export class TimerPageComponent implements OnInit, OnDestroy {
   selectedTabIndex$ = new BehaviorSubject<number>(0);
   destroyed$: Subject<void> = new Subject<void>();
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.route.data.pipe(
-      filter(routeData => !!routeData),
-      takeUntil(this.destroyed$),
-    ).subscribe(routeData => {
-      if (routeData.view === 'timer') {
-        this.selectedTabIndex$.next(0);
-      } else if (routeData.view === 'stopwatch') {
-        this.selectedTabIndex$.next(1);
-      }
-    });
+    this.route.data
+      .pipe(
+        filter(routeData => !!routeData),
+        takeUntil(this.destroyed$),
+      )
+      .subscribe(routeData => {
+        if (routeData.view === 'timer') {
+          this.selectedTabIndex$.next(0);
+        } else if (routeData.view === 'stopwatch') {
+          this.selectedTabIndex$.next(1);
+        }
+      });
   }
 
   ngOnDestroy() {

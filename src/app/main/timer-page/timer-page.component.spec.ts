@@ -11,34 +11,29 @@ import { TimerComponent } from '../../components/timer/timer.component';
 import { TimerPageComponent } from './timer-page.component';
 
 describe('TimerPageComponent', () => {
-    let component: TimerPageComponent;
-    let fixture: ComponentFixture<TimerPageComponent>;
+  let component: TimerPageComponent;
+  let fixture: ComponentFixture<TimerPageComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [
-                TimerPageComponent,
-                TimerComponent,
-                StopwatchComponent,
-                TimerControlsComponent,
-                TimeDisplayComponent,
-            ],
-            imports: [
-                MaterialModule,
-                FormsModule,
-                RouterTestingModule,
-                NoopAnimationsModule,
-            ],
-        }).compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        TimerPageComponent,
+        TimerComponent,
+        StopwatchComponent,
+        TimerControlsComponent,
+        TimeDisplayComponent,
+      ],
+      imports: [MaterialModule, FormsModule, RouterTestingModule, NoopAnimationsModule],
+    }).compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(TimerPageComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TimerPageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

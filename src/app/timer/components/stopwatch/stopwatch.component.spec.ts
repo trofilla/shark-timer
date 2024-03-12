@@ -7,24 +7,24 @@ import { TimerControlsComponent } from '../timer-controls/timer-controls.compone
 import { StopwatchComponent } from './stopwatch.component';
 
 describe('StopwatchComponent', () => {
-    let component: StopwatchComponent;
-    let fixture: ComponentFixture<StopwatchComponent>;
+  let component: StopwatchComponent;
+  let fixture: ComponentFixture<StopwatchComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [StopwatchComponent, TimeDisplayComponent, TimerControlsComponent],
-            imports: [MaterialModule, FormsModule]
-        }).compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [StopwatchComponent, TimeDisplayComponent, TimerControlsComponent],
+      imports: [MaterialModule, FormsModule],
+    }).compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(StopwatchComponent);
-        component = fixture.componentInstance;
-        component.controls = new TimerControlsComponent();
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(StopwatchComponent);
+    component = fixture.componentInstance;
+    component.controls = new TimerControlsComponent();
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });
