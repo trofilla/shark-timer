@@ -1,7 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+
+export const TABS = {
+  0: 'timer',
+  1: 'stopwatch',
+};
 
 @Component({
   selector: 'app-timer-page',
@@ -10,32 +15,35 @@ import { filter, takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimerPageComponent implements OnInit, OnDestroy {
-  selectedTabIndex$ = new BehaviorSubject<number>(0);
-  destroyed$: Subject<void> = new Subject<void>();
+  selectedTabIndex = 0;
+  /**
+   * Unsubscribe stream
+   */
+  destroy$ = new Subject<void>();
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     this.route.data
       .pipe(
         filter(routeData => !!routeData),
-        takeUntil(this.destroyed$),
+        takeUntil(this.destroy$),
       )
       .subscribe(routeData => {
-        if (routeData.view === 'timer') {
-          this.selectedTabIndex$.next(0);
-        } else if (routeData.view === 'stopwatch') {
-          this.selectedTabIndex$.next(1);
-        }
+        this.selectedTabIndex = routeData.view === TABS[0] ? 0 : 1;
       });
   }
 
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.complete();
+  /**
+   * Update selected tab and route associated with it
+   */
+  tabChange(selectedTabIndex: number) {
+    this.selectedTabIndex = selectedTabIndex;
+    this.router.navigate([TABS[selectedTabIndex]]);
   }
 
-  tabChange(selectedTabIndex: number) {
-    this.selectedTabIndex$.next(selectedTabIndex);
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

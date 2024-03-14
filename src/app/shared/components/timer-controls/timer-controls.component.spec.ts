@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MaterialModule } from '../../../material/material.module';
+import { MaterialModule } from '../../material.module';
 import { TimerControlsComponent } from './timer-controls.component';
 
 describe('TimerControlsComponent', () => {
@@ -22,5 +22,20 @@ describe('TimerControlsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should end timer', () => {
+    const spyNext = spyOn(component.timerEnd$, 'next');
+
+    component.end(true);
+    expect(spyNext).toHaveBeenCalledWith(true);
+  });
+
+  it('should toggle alarm', () => {
+    component.toggleAlarm();
+    expect(component.alarmEnabled).toBeFalsy();
+
+    component.toggleAlarm();
+    expect(component.alarmEnabled).toBeTruthy();
   });
 });

@@ -1,20 +1,16 @@
 <div (click)="startSetTime()" *ngIf="!(settingTime$ | async)">
-  <ng-container *ngIf="hoursDigitTwo || hoursDigitOne">
-    <span class="act-hide time-display-digit" tabindex="0">{{ hoursDigitTwo }}</span>
-    <span class="act-hide time-display-digit" tabindex="0">{{ hoursDigitOne }}</span>
+  <ng-container *ngIf="hours">
+    <span class="act-hide time-display-digit">{{ hours }}</span>
     <span class="act-hide time-display-sep">h</span>
   </ng-container>
-  <ng-container *ngIf="minutesDigitTwo || minutesDigitOne">
-    <span class="act-hide time-display-digit" tabindex="0">{{ minutesDigitTwo }}</span>
-    <span class="time-display-digit" tabindex="0">{{ minutesDigitOne }}</span>
+  <ng-container *ngIf="minutes">
+    <span class="act-hide time-display-digit">{{ minutes }}</span>
     <span class="time-display-sep">m</span>
   </ng-container>
-  <span class="time-display-digit" tabindex="0">{{ secondsDigitTwo }}</span>
-  <span class="time-display-digit" tabindex="0">{{ secondsDigitOne }}</span>
+  <span class="time-display-digit">{{ secondsDigitTwo }}{{ secondsDigitOne }}</span>
   <span class="time-display-sep">s</span>
-  <ng-container *ngIf="showHundriths">
-    <span class="time-display-digit time-display-small-digit" tabindex="0">{{ cSecondsDigitTwo }}</span>
-    <span class="time-display-digit time-display-small-digit" tabindex="0">{{ cSecondsDigitOne }}</span>
+  <ng-container *ngIf="showHundreds">
+    <span class="time-display-digit time-display-small-digit">{{ msDigitTwo }}{{ msDigitOne }}</span>
   </ng-container>
 </div>
 <div *ngIf="settingTime$ | async" class="time-input-form">

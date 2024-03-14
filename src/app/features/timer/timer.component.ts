@@ -7,59 +7,59 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, Subject, timer } from 'rxjs';
+import { EMPTY, Observable, Subject, timer } from 'rxjs';
 import { filter, map, mapTo, scan, startWith, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 
-import { TimeDisplayComponent } from '../time-display/time-display.component';
-import { TimerControlsComponent } from '../timer-controls/timer-controls.component';
+import { TimeDisplayComponent } from '../../shared/components/time-display/time-display.component';
+import { TimerControlsComponent } from '../../shared/components/timer-controls/timer-controls.component';
 
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.component.html',
-  styleUrls: ['./timer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimerComponent implements OnInit, OnDestroy {
   @ViewChild('timeDisplay', { static: true }) timeDisplay: TimeDisplayComponent;
   @Input() controls: TimerControlsComponent;
-  @Input() active: boolean;
 
-  time$: Observable<number>;
+  displayedTime$: Observable<number>;
   percent$: Observable<number>;
-  start$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   interval$: Observable<number>;
   reset$: Subject<void> = new Subject<void>();
-  destroyed$: Subject<void> = new Subject<void>();
-
+  destroy$ = new Subject<void>();
   startTime: number = 5 + 1000 * 60 * 5;
 
   constructor(private cd: ChangeDetectorRef) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.interval$ = timer(0, 10);
 
+    this.setupReset();
+    this.setupTimeDisplay();
+    this.setupTimerStart();
+  }
+
+  private setupReset(): void {
     this.controls.timerReset$.subscribe(() => {
       this.resetTimer(this.startTime);
       this.controls.stop();
       this.cd.markForCheck();
     });
+  }
 
+  private setupTimeDisplay(): void {
     this.timeDisplay.settingTime$.pipe(filter(settingTime => settingTime)).subscribe(() => this.controls.stop());
+  }
 
+  private setupTimerStart(): void {
     this.controls.timerStart$.pipe(filter(start => start)).subscribe(() => this.timeDisplay.endSetTime());
   }
 
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-  }
-
-  resetTimer(startTime: number) {
+  private resetTimer(startTime: number): void {
     this.reset$.next();
     this.controls.end(false);
 
-    this.time$ = this.controls.timerStart$.pipe(
-      filter(() => this.active),
+    this.displayedTime$ = this.controls.timerStart$.pipe(
       switchMap(start => (start ? this.interval$.pipe(mapTo(10)) : EMPTY)),
       scan((acc, val) => acc - val, startTime),
       startWith(startTime),
@@ -72,11 +72,16 @@ export class TimerComponent implements OnInit, OnDestroy {
       takeWhile(val => val >= 0),
     );
 
-    this.percent$ = this.time$.pipe(map(time => (1 - time / startTime) * 100));
+    this.percent$ = this.displayedTime$.pipe(map(time => (1 - time / startTime) * 100));
   }
 
-  setTime(startTime: number) {
+  setTime(startTime: number): void {
     this.startTime = startTime;
     this.resetTimer(this.startTime);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

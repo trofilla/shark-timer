@@ -5,10 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { StopwatchComponent } from './timer/components/stopwatch/stopwatch.component';
-import { TimeDisplayComponent } from './timer/components/time-display/time-display.component';
-import { TimerControlsComponent } from './timer/components/timer-controls/timer-controls.component';
-import { TimerComponent } from './timer/components/timer/timer.component';
+import { StopwatchComponent } from './features/stopwatch/stopwatch.component';
+import { TimeDisplayComponent } from './shared/components/time-display/time-display.component';
+import { TimerControlsComponent } from './shared/components/timer-controls/timer-controls.component';
+import { TimerComponent } from './features/timer/timer.component';
 import { TimerPageComponent } from './main/timer-page/timer-page.component';
 
 import { MatButtonModule } from '@angular/material/button';

@@ -1,5 +1,4 @@
 :host {
-  display: block;
   cursor: pointer;
   border: 1px solid transparent;
   display: flex;
@@ -21,7 +20,7 @@
     font-size: 35px;
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1068px) {
     font-size: 32px;
 
     &.time-display-small-digit {
@@ -37,7 +36,7 @@
   padding-right: 18px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1068px) {
   .time-display-sep {
     font-size: 20px;
   }

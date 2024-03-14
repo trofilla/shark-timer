@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -7,15 +7,26 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./time-display.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimeDisplayComponent implements OnInit {
-  private hourInMs = 3600000;
-  private minuteInMs = 60000;
-  private secondInMs = 1000;
+export class TimeDisplayComponent {
+  private readonly hourInMs = 3600000;
+  private readonly minuteInMs = 60000;
+  private readonly secondInMs = 1000;
 
-  @Input() time: number = 12 * this.hourInMs + 34 * this.minuteInMs + 56 * 1000 + 780;
-  @Input() showHundriths: boolean = true;
-  @Input() canSetTime: boolean = false;
-
+  /**
+   * Time that should be displayed in ms
+   */
+  @Input() time;
+  /**
+   * Flag to show ms
+   */
+  @Input() showHundreds = true;
+  /**
+   * Flag to be able to set time
+   */
+  @Input() canSetTime = false;
+  /**
+   * Flag to set default time
+   */
   @Output() setTime = new EventEmitter<number>();
 
   settingTime$ = new BehaviorSubject<boolean>(false);
@@ -24,8 +35,6 @@ export class TimeDisplayComponent implements OnInit {
   inputSeconds: number;
 
   constructor() {}
-
-  ngOnInit() {}
 
   inputChange(hours: number, minutes: number, seconds: number) {
     const timeVal = hours * this.hourInMs + minutes * this.minuteInMs + seconds * this.secondInMs;
@@ -48,22 +57,8 @@ export class TimeDisplayComponent implements OnInit {
     return Math.floor(this.time / this.hourInMs);
   }
 
-  get hoursDigitTwo(): number {
-    return this.digitTwo(this.hours);
-  }
-  get hoursDigitOne(): number {
-    return this.digitOne(this.hours);
-  }
-
   get minutes(): number {
     return Math.floor((this.time / this.minuteInMs) % 60);
-  }
-
-  get minutesDigitTwo(): number {
-    return this.digitTwo(this.minutes);
-  }
-  get minutesDigitOne(): number {
-    return this.digitOne(this.minutes);
   }
 
   get seconds(): number {
@@ -77,15 +72,15 @@ export class TimeDisplayComponent implements OnInit {
     return this.digitOne(this.seconds);
   }
 
-  get cSeconds(): number {
+  get ms(): number {
     return Math.floor((this.time / 10) % 100);
   }
 
-  get cSecondsDigitTwo(): number {
-    return this.digitTwo(this.cSeconds);
+  get msDigitTwo(): number {
+    return this.digitTwo(this.ms);
   }
-  get cSecondsDigitOne(): number {
-    return this.digitOne(this.cSeconds);
+  get msDigitOne(): number {
+    return this.digitOne(this.ms);
   }
 
   private digitTwo(val: number) {
