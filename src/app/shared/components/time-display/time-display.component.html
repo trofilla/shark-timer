@@ -1,0 +1,45 @@
+<div (click)="startSetTime()" *ngIf="!(settingTime$ | async)">
+  <ng-container *ngIf="hours">
+    <span class="act-hide time-display-digit">{{ hours }}</span>
+    <span class="act-hide time-display-sep">h</span>
+  </ng-container>
+  <ng-container *ngIf="minutes">
+    <span class="act-hide time-display-digit">{{ minutes }}</span>
+    <span class="time-display-sep">m</span>
+  </ng-container>
+  <span class="time-display-digit">{{ secondsDigitTwo }}{{ secondsDigitOne }}</span>
+  <span class="time-display-sep">s</span>
+  <ng-container *ngIf="showHundreds">
+    <span class="time-display-digit time-display-small-digit">{{ msDigitTwo }}{{ msDigitOne }}</span>
+  </ng-container>
+</div>
+<div *ngIf="settingTime$ | async" class="time-input-form">
+  <mat-form-field>
+    <input
+      matInput
+      type="number"
+      placeholder="Hours"
+      value="0"
+      [(ngModel)]="inputHours"
+      (input)="inputChange(inputHours, inputMinutes, inputSeconds)" />
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      type="number"
+      placeholder="Minutes"
+      value="0"
+      [(ngModel)]="inputMinutes"
+      (input)="inputChange(inputHours, inputMinutes, inputSeconds)" />
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      type="number"
+      placeholder="Seconds"
+      value="0"
+      [(ngModel)]="inputSeconds"
+      (input)="inputChange(inputHours, inputMinutes, inputSeconds)" />
+  </mat-form-field>
+  <button mat-button (click)="endSetTime()">Done</button>
+</div>

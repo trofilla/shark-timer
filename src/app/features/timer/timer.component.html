@@ -1,0 +1,7 @@
+<app-time-display
+  #timeDisplay
+  [time]="displayedTime$ | async"
+  [showHundreds]="false"
+  [canSetTime]="true"
+  (setTime)="setTime($event)"></app-time-display>
+<mat-progress-bar mode="determinate" [value]="percent$ | async"></mat-progress-bar>

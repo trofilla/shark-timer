@@ -1,5 +1,4 @@
 :host {
-  display: block;
   cursor: pointer;
   border: 1px solid transparent;
   display: flex;
@@ -21,7 +20,7 @@
     font-size: 35px;
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1068px) {
     font-size: 32px;
 
     &.time-display-small-digit {
@@ -30,7 +29,6 @@
   }
 }
 
-
 .time-display-sep {
   display: inline-block;
   font-size: 28px;
@@ -38,26 +36,26 @@
   padding-right: 18px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1068px) {
   .time-display-sep {
     font-size: 20px;
   }
 }
 
 .time-input-form {
-    font-size: 16px;
-    display: flex;
-    .mat-form-field,
-    .mat-button {
-        flex: 1;
+  font-size: 16px;
+  display: flex;
+  .mat-form-field,
+  .mat-button {
+    flex: 1;
+  }
+  ::ng-deep {
+    .mat-form-field-infix {
+      width: auto;
+      input {
+        text-align: right;
+        padding-right: 4px;
+      }
     }
-    ::ng-deep {
-        .mat-form-field-infix {
-            width: auto;
-            input {
-                text-align: right;
-                padding-right: 4px;
-            }
-        }
-    }
+  }
 }

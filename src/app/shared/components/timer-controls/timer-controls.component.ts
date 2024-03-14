@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { retry } from 'rxjs/operators';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-timer-controls',
@@ -9,6 +9,11 @@ import { retry } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimerControlsComponent implements OnInit {
+  /**
+   * Document element to handle fullscreen mode
+   */
+  elem;
+
   @ViewChild('alarm', { static: true }) alarmElementRef: ElementRef;
   @Input() timerActive: boolean;
 
@@ -20,15 +25,16 @@ export class TimerControlsComponent implements OnInit {
   stopwatchReset$ = new Subject<void>();
 
   alarm: HTMLAudioElement;
-  alarmEnabled$ = new BehaviorSubject<boolean>(true);
+  alarmEnabled = true;
   alarmSounding$ = new BehaviorSubject<boolean>(false);
 
-  fullScreen$ = new BehaviorSubject<boolean>(false);
+  fullScreen = false;
 
-  constructor() { }
+  constructor(@Inject(DOCUMENT) private document: any) {}
 
   ngOnInit() {
     this.alarm = this.alarmElementRef.nativeElement;
+    this.elem = document.documentElement;
   }
 
   startStop() {
@@ -75,28 +81,69 @@ export class TimerControlsComponent implements OnInit {
   }
 
   toggleAlarm() {
-    this.alarmEnabled$.next(!this.alarmEnabled$.value);
+    this.alarmEnabled = !this.alarmEnabled;
   }
 
   startAlarm() {
-    if (this.alarmEnabled$.value && !this.alarmSounding$.value) {
+    if (this.alarmEnabled && !this.alarmSounding$.value) {
       this.alarmSounding$.next(true);
       this.alarm.play();
     }
   }
 
   stopAlarm() {
-    if (this.alarmEnabled$.value && this.alarmSounding$.value) {
+    if (this.alarmEnabled && this.alarmSounding$.value) {
       this.alarmSounding$.next(false);
       this.alarm.pause();
     }
   }
 
   toggleFullscreen() {
-    this.fullScreen$.next(!this.fullScreen$.value);
+    if (!this.fullScreen) {
+      this.openFullscreen();
+    } else {
+      this.closeFullscreen();
+    }
+    this.fullScreen = !this.fullScreen;
   }
 
   get started() {
     return this.timerActive ? this.timerStart$.value : this.stopwatchStart$.value;
+  }
+
+  /**
+   * Function to open fullscreen mode
+   */
+  openFullscreen() {
+    if (this.elem.requestFullscreen) {
+      this.elem.requestFullscreen();
+    } else if (this.elem.mozRequestFullScreen) {
+      /* Firefox */
+      this.elem.mozRequestFullScreen();
+    } else if (this.elem.webkitRequestFullscreen) {
+      /* Chrome, Safari and Opera */
+      this.elem.webkitRequestFullscreen();
+    } else if (this.elem.msRequestFullscreen) {
+      /* IE/Edge */
+      this.elem.msRequestFullscreen();
+    }
+  }
+
+  /**
+   * Function to close fullscreen mode
+   */
+  closeFullscreen() {
+    if (document.exitFullscreen) {
+      this.document.exitFullscreen();
+    } else if (this.document.mozCancelFullScreen) {
+      /* Firefox */
+      this.document.mozCancelFullScreen();
+    } else if (this.document.webkitExitFullscreen) {
+      /* Chrome, Safari and Opera */
+      this.document.webkitExitFullscreen();
+    } else if (this.document.msExitFullscreen) {
+      /* IE/Edge */
+      this.document.msExitFullscreen();
+    }
   }
 }
